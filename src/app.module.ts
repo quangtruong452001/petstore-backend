@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ProductModule } from './product/product.module';
 
 const config: ConfigService = new ConfigService();
 
@@ -14,9 +15,10 @@ const config: ConfigService = new ConfigService();
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    MongooseModule.forRoot(config.get('DATABASE_URL')),
     AuthModule,
     UserModule,
-    MongooseModule.forRoot(config.get('DATABASE_URL')),
+    ProductModule,
   ],
 })
 export class AppModule {}
