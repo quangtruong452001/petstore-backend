@@ -1,0 +1,3 @@
+To run mongodb in local: /Users/tinlo/mongodb/bin/mongod.exe --dbpath=/Users/tinlo/mongodb-data
+To run prisma in local: npx prisma studio
+To run nestjs in local: npm run start:dev
