@@ -3,7 +3,7 @@ import {
   Schema,
   SchemaFactory,
 } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import {
   Category,
   CategorySchema,
@@ -36,10 +36,24 @@ export class Product {
   @Prop()
   additionalInfos: string;
 
-  @Prop([ImageSchema])
+  @Prop({
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Image',
+      },
+    ],
+  })
   images: Image[];
 
-  @Prop([CategorySchema])
+  @Prop({
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+      },
+    ],
+  })
   categories: Category[];
 }
 

@@ -16,7 +16,7 @@ export const ImageSchema =
 @Schema()
 export class Category {
   @Prop()
-  name: string;
+  category_name: string;
 }
 
 export const CategorySchema =
