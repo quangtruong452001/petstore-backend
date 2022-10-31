@@ -12,12 +12,3 @@ export class Image {
 
 export const ImageSchema =
   SchemaFactory.createForClass(Image);
-
-@Schema()
-export class Category {
-  @Prop()
-  category_name: string;
-}
-
-export const CategorySchema =
-  SchemaFactory.createForClass(Category);
