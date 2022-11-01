@@ -72,7 +72,7 @@ export function handleProductSorts(sorts) {
   if (orderBy === 'priceAsc') {
     sort.price = 'asc';
   }
-  if (orderBy === 'priceDsc') {
+  if (orderBy === 'priceDesc') {
     sort.price = 'desc';
   }
   if (orderBy === 'date') {

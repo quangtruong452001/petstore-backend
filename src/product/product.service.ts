@@ -1,5 +1,5 @@
 import {
-  ForbiddenException,
+  // ForbiddenException,
   Injectable,
 } from '@nestjs/common';
 // import { ConfigService } from '@nestjs/config';
@@ -24,23 +24,51 @@ export class ProductService {
     limit?: number,
     sort?: any,
   ) {
+    try {
+      const products = await this.productModel
+        .find(options)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .sort(sort)
+        .populate(['images', 'categories']);
+      return products;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
     // **Find all the product
-    const products = await this.productModel
-      .find(options)
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .sort(sort)
-      .populate(['images', 'categories']);
-    return products;
   }
 
   async productDetail(id: string) {
-    const product = await this.productModel
-      .findById(id)
-      .populate(['images', 'categories']);
-    return product;
+    try {
+      const product = await this.productModel
+        .findById(id)
+        .populate(['images', 'categories']);
+      return product;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
   count(options: any) {
-    return this.productModel.count(options).exec();
+    try {
+      return this.productModel.count(options).exec();
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  async getTotalProducts() {
+    try {
+      const totalOrders =
+        await this.productModel.countDocuments({});
+
+      return {
+        totalOrders,
+        statusCode: 200,
+      };
+    } catch (err) {
+      throw err;
+    }
   }
 }

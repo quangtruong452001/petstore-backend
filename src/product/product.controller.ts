@@ -22,12 +22,19 @@ export class ProductController {
     return this.productService.products(options);
   }
 
+  // ** GET /product/total
+  @Get('total')
+  async totalNumber() {
+    return this.productService.getTotalProducts();
+  }
+
   // ** GET /product/:id
   @Get(':id')
   productDetail(@Param('id') id: string) {
     return this.productService.productDetail(id);
   }
 
+  // ** GET /product
   @Get()
   async products(@Req() req: Request) {
     const options: productQuery = {};
@@ -45,6 +52,7 @@ export class ProductController {
       options.categories = req.query.categories.toString();
     }
 
+    // ** Sort
     if (req.query.orderBy) {
       sorts.orderBy = req.query.orderBy.toString();
     }
