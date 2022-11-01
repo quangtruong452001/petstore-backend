@@ -4,12 +4,11 @@ import {
   SchemaFactory,
 } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Image, ImageSchema } from './common.schema';
 import {
   Category,
   CategorySchema,
-  Image,
-  ImageSchema,
-} from './common.schema';
+} from './category.schema';
 
 export type OrderDocument = Order & Document;
 
