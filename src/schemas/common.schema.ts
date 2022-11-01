@@ -10,12 +10,6 @@ export class Image {
   url: string;
 }
 
-@Schema()
-export class Category {
-  @Prop()
-  category_name: string;
-}
-
 @Schema({ _id: false })
 export class Bill {
   @Prop({ required: true })
@@ -108,9 +102,6 @@ export class Shipping {
 
 export const ImageSchema =
   SchemaFactory.createForClass(Image);
-
-export const CategorySchema =
-  SchemaFactory.createForClass(Category);
 
 export const BillSchema =
   SchemaFactory.createForClass(Bill);

@@ -4,12 +4,11 @@ import {
   SchemaFactory,
 } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { Image, ImageSchema } from './common.schema';
 import {
   Category,
-  CategorySchema,
-  Image,
-  ImageSchema,
-} from './common.schema';
+  // CategorySchema,
+} from './category.schema';
 
 export type ProductDocument = Product & Document;
 
@@ -22,7 +21,7 @@ export class Product {
   productCode: string;
 
   @Prop({ required: true })
-  productSku: string;
+  productSKU: string;
 
   @Prop({ required: true })
   price: number;
