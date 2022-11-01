@@ -3,8 +3,9 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
-  ValidateNested,
+  //ValidateNested,
 } from 'class-validator';
 import { CategoryDto, ImageDto } from './common.dto';
 
@@ -22,21 +23,68 @@ export class ProductDto {
   price: number;
 
   @IsString()
+  @IsOptional()
   shortDescription: string;
 
   @IsString()
+  @IsOptional()
   additionalInfos: string;
 
+  @IsString()
+  @IsOptional()
   productCode: string;
 
-  productSku: string;
+  @IsString()
+  @IsOptional()
+  productSKU: string;
 
-  @ValidateNested()
   @IsArray()
   @Type(() => ImageDto)
   images: ImageDto[];
 
-  @ValidateNested()
+  @IsArray()
+  @Type(() => CategoryDto)
+  categories: CategoryDto[];
+}
+
+export class ProductUpdateDto {
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  description: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @IsOptional()
+  price: number;
+
+  @IsString()
+  @IsOptional()
+  shortDescription: string;
+
+  @IsString()
+  @IsOptional()
+  additionalInfos: string;
+
+  @IsString()
+  @IsOptional()
+  productCode: string;
+
+  @IsString()
+  @IsOptional()
+  productSKU: string;
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => ImageDto)
+  images: ImageDto[];
+
+  @IsOptional()
   @IsArray()
   @Type(() => CategoryDto)
   categories: CategoryDto[];

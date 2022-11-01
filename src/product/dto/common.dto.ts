@@ -1,21 +1,21 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 export class ImageDto {
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   id: string;
 
-  @IsString()
-  @IsNotEmpty()
-  url: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // url: string;
 }
 
 export class CategoryDto {
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   id: string;
 
-  @IsString()
-  @IsNotEmpty()
-  url: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // url: string;
 }
