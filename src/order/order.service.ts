@@ -16,19 +16,20 @@ export class OrderService {
   ) {}
 
   async getOrders(
-    userId?: string,
+    userId: string,
     limit?: string,
-    skip?: string,
+    page?: string,
   ) {
     try {
       // Determine filters in find()
-      const filters: any = {};
-      if (userId) filters.user = userId;
+      const filters = {
+        user: userId,
+      };
 
       // Determine options in find()
       const options: any = {};
       if (limit) options.limit = parseInt(limit);
-      if (skip) options.skip = parseInt(skip);
+      if (page) options.skip = parseInt(page) - 1;
 
       // Find orders
       const orders = await this.orderModel.find(
@@ -42,11 +43,12 @@ export class OrderService {
     }
   }
 
-  async getTotalOrders(userId?: string) {
+  async getTotalOrders(userId: string) {
     try {
       // Determine filters in find()
-      const filters: any = {};
-      if (userId) filters.user = userId;
+      const filters = {
+        user: userId,
+      };
 
       // Find orders
       const totalOrders =
@@ -61,13 +63,13 @@ export class OrderService {
     }
   }
 
-  async getOrderById(orderId: string, userId?: string) {
+  async getOrderById(orderId: string, userId: string) {
     try {
       // Determine filters in find()
-      const filters: any = {
+      const filters = {
         _id: orderId,
+        user: userId,
       };
-      if (userId) filters.user = userId;
 
       // Find order detail
       const order = await this.orderModel.findOne(filters);
@@ -77,11 +79,12 @@ export class OrderService {
     }
   }
 
-  async createOrder(orderDto: OrderDto) {
+  async createOrder(orderDto: OrderDto, userId: string) {
     try {
       // Other information added to order:
       const otherInfos: any = {
         status: ORDER_STATUS.PENDING,
+        user: userId,
       };
       if (orderDto.payment)
         otherInfos.payment = orderDto.payment;
@@ -104,11 +107,13 @@ export class OrderService {
   async updateOrderById(
     orderId: string,
     orderDto: OrderUpdateDto,
+    userId: string,
   ) {
     try {
       const updatedOrder = await this.orderModel.updateOne(
         {
           _id: orderId,
+          user: userId,
         },
         {
           ...orderDto,
@@ -123,10 +128,11 @@ export class OrderService {
     }
   }
 
-  async deleteOrderById(orderId: string) {
+  async deleteOrderById(orderId: string, userId: string) {
     try {
       const deletedOrder = await this.orderModel.deleteOne({
         _id: orderId,
+        user: userId,
       });
       return {
         deletedCount: deletedOrder.deletedCount,
