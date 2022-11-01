@@ -1,12 +1,12 @@
+import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsEmail,
   IsNotEmpty,
   IsNumber,
-  IsObject,
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { CategoryDto, ImageDto } from './common.dto';
 
 export class ProductDto {
   @IsString()
@@ -31,30 +31,13 @@ export class ProductDto {
 
   productSku: string;
 
-  @IsArray()
   @ValidateNested()
-  images: Image[];
-
   @IsArray()
+  @Type(() => ImageDto)
+  images: ImageDto[];
+
   @ValidateNested()
-  categories: Category[];
-}
-class Image {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  url: string;
-}
-
-class Category {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  url: string;
+  @IsArray()
+  @Type(() => CategoryDto)
+  categories: CategoryDto[];
 }

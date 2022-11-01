@@ -3,43 +3,39 @@ import {
   Schema,
   SchemaFactory,
 } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Image, ImageSchema } from './common.schema';
+import mongoose, { Document } from 'mongoose';
 import {
-  Category,
-  CategorySchema,
-} from './category.schema';
+  Bill,
+  BillSchema,
+  Cart,
+  CartSchema,
+} from './common.schema';
 
 export type OrderDocument = Order & Document;
 
 @Schema({ timestamps: true })
 export class Order {
-  @Prop({ required: true })
-  firstName: string;
+  @Prop({ required: true, type: [CartSchema] })
+  cart: Cart[];
+
+  @Prop({ required: true, type: BillSchema })
+  bill: Bill;
+
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  })
+  user: string;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Payment',
+  })
+  payment: string;
 
   @Prop({ required: true })
-  lastName: string;
-
-  @Prop({ required: true })
-  company: string;
-
-  @Prop()
-  city: string;
-
-  @Prop({ required: true })
-  country: number;
-
-  @Prop({ required: true })
-  address: string;
-
-  @Prop()
-  postcode: string;
-
-  @Prop()
-  phone: string;
-
-  @Prop()
-  email: string;
+  status: number;
 }
 
 export const OrderSchema =

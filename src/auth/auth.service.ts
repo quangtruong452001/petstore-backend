@@ -22,31 +22,36 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async signup(dto: AuthDto) {
+  async signup(authDto: AuthDto) {
     // ** Generate the password hash
-    const hashPassword = await argon.hash(dto.password);
+    const hashPassword = await argon.hash(authDto.password);
 
     try {
       // ** Save the new user in the database
       const createdUser = await this.userModel.create({
-        email: dto.email,
+        email: authDto.email,
         hashPassword: hashPassword,
+        lastName: authDto.lastName,
+        firstName: authDto.firstName,
       });
 
       // ** Send back the token
-      return this.signToken(
-        createdUser.id,
-        createdUser.email,
-      );
+      return {
+        ...this.signToken(
+          createdUser.id,
+          createdUser.email,
+        ),
+        statusCode: 201,
+      };
     } catch (error) {
       throw new ForbiddenException('Credentials taken');
     }
   }
 
-  async signin(dto: AuthDto) {
+  async signin(authDto: AuthDto) {
     // ** Find the user by email
     const user = await this.userModel.findOne({
-      email: dto.email,
+      email: authDto.email,
     });
 
     // ** If user does not exist throw exception
@@ -56,7 +61,7 @@ export class AuthService {
     // ** Compare password
     const pwMatches = await argon.verify(
       user.hashPassword,
-      dto.password,
+      authDto.password,
     );
 
     // ** If password is incorrect throw exception
@@ -64,7 +69,10 @@ export class AuthService {
       throw new ForbiddenException('Credential incorrect');
 
     // ** Send back the token
-    return this.signToken(user.id, user.email);
+    return {
+      ...this.signToken(user.id, user.email),
+      statusCode: 200,
+    };
   }
 
   async signToken(
@@ -82,7 +90,7 @@ export class AuthService {
     });
 
     return {
-      access_token: token,
+      accessToken: token,
     };
   }
 }

@@ -7,9 +7,8 @@ import mongoose, { Document } from 'mongoose';
 import { Image, ImageSchema } from './common.schema';
 import {
   Category,
-  CategorySchema,
+  // CategorySchema,
 } from './category.schema';
-import * as paginate from 'mongoose-paginate-v2';
 
 export type ProductDocument = Product & Document;
 
@@ -59,5 +58,3 @@ export class Product {
 
 export const ProductSchema =
   SchemaFactory.createForClass(Product);
-
-ProductSchema.plugin(paginate);

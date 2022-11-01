@@ -2,10 +2,10 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+// import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
-import { ProductDto } from './dto/product.dto';
-import { Model, PaginateModel } from 'mongoose';
+// import { ProductDto } from './dto/product.dto';
+import { Model } from 'mongoose';
 import {
   Product,
   ProductDocument,
@@ -15,15 +15,14 @@ import {
 export class ProductService {
   constructor(
     @InjectModel(Product.name)
-    private productModel: Model<ProductDocument>,
-    private config: ConfigService,
+    private productModel: Model<ProductDocument>, // private config: ConfigService,
   ) {}
 
   async products(
-    options,
+    options: any,
     page?: number,
     limit?: number,
-    sort?,
+    sort?: any,
   ) {
     // **Find all the product
     const products = await this.productModel
@@ -32,9 +31,6 @@ export class ProductService {
       .limit(limit)
       .sort(sort)
       .populate(['images', 'categories']);
-
-    // const products = await this.productModel.find({});
-    // console.log(products);
     return products;
   }
 
@@ -44,7 +40,7 @@ export class ProductService {
       .populate(['images', 'categories']);
     return product;
   }
-  count(options) {
+  count(options: any) {
     return this.productModel.count(options).exec();
   }
 }
