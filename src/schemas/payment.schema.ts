@@ -27,6 +27,13 @@ export class Payment {
 
   @Prop()
   description: string;
+
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  })
+  user: string;
 }
 
 export const PaymentSchema =

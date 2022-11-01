@@ -14,15 +14,21 @@ export class PaymentService {
     private paymentModel: Model<PaymentDocument>,
   ) {}
 
-  async getPayments(limit?: string, skip?: string) {
+  async getPayments(
+    userId: string,
+    limit?: string,
+    page?: string,
+  ) {
     try {
       // Determine filters in find()
-      const filters: any = {};
+      const filters = {
+        user: userId,
+      };
 
       // Determine options in find()
       const options: any = {};
       if (limit) options.limit = parseInt(limit);
-      if (skip) options.skip = parseInt(skip);
+      if (page) options.skip = parseInt(page) - 1;
 
       // Find payments
       const payments = await this.paymentModel.find(
@@ -36,10 +42,12 @@ export class PaymentService {
     }
   }
 
-  async getTotalPayments() {
+  async getTotalPayments(userId: string) {
     try {
       // Determine filters in find()
-      const filters: any = {};
+      const filters = {
+        user: userId,
+      };
 
       // Find total number of payments
       const totalPayments =
@@ -54,11 +62,12 @@ export class PaymentService {
     }
   }
 
-  async getPaymentById(paymentId: string) {
+  async getPaymentById(paymentId: string, userId: string) {
     try {
       // Determine filters in find()
-      const filters: any = {
+      const filters = {
         _id: paymentId,
+        user: userId,
       };
 
       // Find payment detail
@@ -71,11 +80,14 @@ export class PaymentService {
     }
   }
 
-  async createPayment(paymentDto: PaymentDto) {
+  async createPayment(
+    paymentDto: PaymentDto,
+    userId: string,
+  ) {
     try {
       // Create payment in the database:
       const createdPayment = await this.paymentModel.create(
-        { ...paymentDto },
+        { ...paymentDto, user: userId },
       );
       return {
         paymentId: createdPayment._id,
@@ -89,12 +101,14 @@ export class PaymentService {
   async updatePaymentById(
     paymentId: string,
     paymentDto: PaymentUpdateDto,
+    userId: string,
   ) {
     try {
       const updatedPayment =
         await this.paymentModel.updateOne(
           {
             _id: paymentId,
+            user: userId,
           },
           {
             ...paymentDto,
@@ -109,11 +123,15 @@ export class PaymentService {
     }
   }
 
-  async deletePaymentById(paymentId: string) {
+  async deletePaymentById(
+    paymentId: string,
+    userId: string,
+  ) {
     try {
       const deletedPayment =
         await this.paymentModel.deleteOne({
           _id: paymentId,
+          user: userId,
         });
       return {
         deletedCount: deletedPayment.deletedCount,
