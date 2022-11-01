@@ -36,13 +36,10 @@ export class AuthService {
       });
 
       // ** Send back the token
-      return {
-        ...this.signToken(
-          createdUser.id,
-          createdUser.email,
-        ),
-        statusCode: 201,
-      };
+      return this.signToken(
+        createdUser.id,
+        createdUser.email,
+      );
     } catch (error) {
       throw new ForbiddenException('Credentials taken');
     }
@@ -69,10 +66,7 @@ export class AuthService {
       throw new ForbiddenException('Credential incorrect');
 
     // ** Send back the token
-    return {
-      ...this.signToken(user.id, user.email),
-      statusCode: 200,
-    };
+    return this.signToken(user.id, user.email);
   }
 
   async signToken(
@@ -85,12 +79,13 @@ export class AuthService {
     };
     const secret = this.config.get('JWT_SECRET');
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '15m', // ** 15 minutes,
+      expiresIn: '12h', // ** 12 hours,
       secret: secret,
     });
 
     return {
       accessToken: token,
+      statusCode: 200,
     };
   }
 }

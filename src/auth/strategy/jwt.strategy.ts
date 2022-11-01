@@ -18,6 +18,9 @@ export class JwtStrategy extends PassportStrategy(
 
   // ** Run before the Controller get the request
   async validate(payload: { sub: string; email: string }) {
-    return payload;
+    return {
+      id: payload.sub,
+      email: payload.email,
+    };
   }
 }
