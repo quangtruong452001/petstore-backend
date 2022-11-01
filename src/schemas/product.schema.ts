@@ -4,7 +4,10 @@ import {
   SchemaFactory,
 } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { Image, ImageSchema } from './common.schema';
+import {
+  Image,
+  // ImageSchema
+} from './common.schema';
 import {
   Category,
   // CategorySchema,

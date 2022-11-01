@@ -10,6 +10,7 @@ import {
   Product,
   ProductDocument,
 } from '../schemas/product.schema';
+import { ProductDto } from './dto';
 
 @Injectable()
 export class ProductService {
@@ -58,6 +59,12 @@ export class ProductService {
       throw error;
     }
   }
+
+  async createProduct(productDto: ProductDto) {
+    // console.log(productDto);
+    return await this.productModel.create(productDto);
+  }
+
   async getTotalProducts() {
     try {
       const totalOrders =

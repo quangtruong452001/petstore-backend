@@ -1,7 +1,9 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Post,
   Req,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
@@ -11,10 +13,19 @@ import {
   handleProductFilters,
   handleProductSorts,
 } from '../utils/helper';
+import { ProductDto } from './dto';
 
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
+
+  // ** POST /product/create
+  @Post('create')
+  createProduct(@Body() productDto: ProductDto) {
+    // console.log(productDto);
+    return this.productService.createProduct(productDto);
+  }
+
   // ** GET /product/all  will add pagination later
   @Get('all')
   getAllProducts() {
@@ -39,10 +50,16 @@ export class ProductController {
   async products(@Req() req: Request) {
     const options: productQuery = {};
     const sorts: productSort = {};
-    const page: number =
-      parseInt(req.query.page as any) || 1;
-    const limit: number =
+    let page: number = parseInt(req.query.page as any) || 1;
+    let limit: number =
       parseInt(req.query.limit as any) || 9;
+    if (page < 0) {
+      page = 1;
+    }
+    if (limit < 0) {
+      limit = 9;
+    }
+
     if (req.query.s) {
       // query.search (by name)
       options.name = req.query.s.toString();
