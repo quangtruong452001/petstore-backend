@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   Payment,
   PaymentSchema,
-} from 'src/schemas/payment.schema';
+} from '../schemas/payment.schema';
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
 

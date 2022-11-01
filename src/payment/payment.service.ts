@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import {
   Payment,
   PaymentDocument,
-} from 'src/schemas/payment.schema';
+} from '../schemas/payment.schema';
 import { PaymentDto, PaymentUpdateDto } from './dto';
 
 @Injectable()
