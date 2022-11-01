@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import {
   Order,
   OrderDocument,
-} from 'src/schemas/order.schema';
+} from '../schemas/order.schema';
 import { OrderDto, OrderUpdateDto } from './dto';
 
 @Injectable()

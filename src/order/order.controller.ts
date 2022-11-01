@@ -9,8 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
 import { OrderDto, OrderUpdateDto } from './dto';
 import { OrderService } from './order.service';
 
