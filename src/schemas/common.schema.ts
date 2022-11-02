@@ -19,22 +19,25 @@ export class Bill {
   lastName: string;
 
   @Prop({ required: true })
-  city: string;
-
-  @Prop({ required: true })
-  country: string;
-
-  @Prop({ required: true })
-  billingAddress: string;
-
-  @Prop()
-  postcode: string;
-
-  @Prop({ required: true })
   phone: string;
 
   @Prop({ required: true })
   email: string;
+
+  @Prop()
+  company: string;
+
+  @Prop({ required: true })
+  region: string;
+
+  @Prop({ required: true })
+  district: string;
+
+  @Prop()
+  ward: string;
+
+  @Prop({ required: true })
+  address: string;
 
   @Prop()
   orderComment: string;
@@ -58,48 +61,6 @@ export class Cart {
   quantity: number;
 }
 
-@Schema({ _id: false })
-export class AmountPayment {
-  @Prop({ required: true })
-  currency_code: string;
-
-  @Prop({ required: true })
-  value: string;
-}
-
-@Schema({ _id: false })
-export class ShippingAddress {
-  @Prop()
-  country_code: string;
-
-  @Prop()
-  address_line_1: string;
-
-  @Prop()
-  address_line_2: string;
-
-  @Prop()
-  admin_area_2: string;
-
-  @Prop()
-  admin_area_1: string;
-
-  @Prop()
-  postal_code: string;
-}
-
-export const ShippingAddressSchema =
-  SchemaFactory.createForClass(ShippingAddress);
-
-@Schema({ _id: false })
-export class Shipping {
-  @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true, type: ShippingAddressSchema })
-  address: object;
-}
-
 export const ImageSchema =
   SchemaFactory.createForClass(Image);
 
@@ -108,9 +69,3 @@ export const BillSchema =
 
 export const CartSchema =
   SchemaFactory.createForClass(Cart);
-
-export const AmountPaymentSchema =
-  SchemaFactory.createForClass(AmountPayment);
-
-export const ShippingSchema =
-  SchemaFactory.createForClass(Shipping);
