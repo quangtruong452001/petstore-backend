@@ -3,6 +3,8 @@ import {
   IsInt,
   IsString,
   IsNumber,
+  IsEmail,
+  IsOptional,
 } from 'class-validator';
 
 export class BillDto {
@@ -16,26 +18,31 @@ export class BillDto {
 
   @IsString()
   @IsNotEmpty()
-  city: string;
-
-  @IsString()
-  @IsNotEmpty()
-  country: string;
-
-  @IsString()
-  @IsNotEmpty()
-  billingAddress: string;
-
-  @IsString()
-  postcode: string;
-
-  @IsString()
-  @IsNotEmpty()
   phone: string;
 
-  @IsString()
+  @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @IsString()
+  @IsOptional()
+  company: string;
+
+  @IsString()
+  @IsNotEmpty()
+  region: string;
+
+  @IsString()
+  @IsNotEmpty()
+  district: string;
+
+  @IsString()
+  @IsOptional()
+  ward: string;
+
+  @IsString()
+  @IsNotEmpty()
+  address: string;
 
   @IsString()
   orderComment: string;
