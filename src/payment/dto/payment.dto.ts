@@ -31,8 +31,4 @@ export class PaymentDto {
   type: string;
 }
 
-export class PaymentUpdateDto {
-  @IsString()
-  @IsOptional()
-  description: string;
-}
+export class PaymentUpdateDto {}
