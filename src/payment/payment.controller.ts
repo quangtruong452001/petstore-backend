@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
-import { PaymentDto, PaymentUpdateDto } from './dto';
+import { PaymentDto } from './dto';
 import { PaymentService } from './payment.service';
 
 @UseGuards(JwtGuard)
@@ -59,18 +59,18 @@ export class PaymentController {
     );
   }
 
-  @Patch(':id')
-  updatePaymentById(
-    @Param('id') paymentId: string,
-    @Body() paymentDto: PaymentUpdateDto,
-    @GetUser('id') userId: string,
-  ) {
-    return this.paymentService.updatePaymentById(
-      paymentId,
-      paymentDto,
-      userId,
-    );
-  }
+  // @Patch(':id')
+  // updatePaymentById(
+  //   @Param('id') paymentId: string,
+  //   @Body() paymentDto: PaymentUpdateDto,
+  //   @GetUser('id') userId: string,
+  // ) {
+  //   return this.paymentService.updatePaymentById(
+  //     paymentId,
+  //     paymentDto,
+  //     userId,
+  //   );
+  // }
 
   @Delete(':id')
   deletePaymentById(

@@ -98,30 +98,30 @@ export class PaymentService {
     }
   }
 
-  async updatePaymentById(
-    paymentId: string,
-    paymentDto: PaymentUpdateDto,
-    userId: string,
-  ) {
-    try {
-      const updatedPayment =
-        await this.paymentModel.updateOne(
-          {
-            _id: paymentId,
-            user: userId,
-          },
-          {
-            ...paymentDto,
-          },
-        );
-      return {
-        updatedCount: updatedPayment.modifiedCount,
-        statusCode: 200,
-      };
-    } catch (err) {
-      throw err;
-    }
-  }
+  // async updatePaymentById(
+  //   paymentId: string,
+  //   paymentDto: PaymentUpdateDto,
+  //   userId: string,
+  // ) {
+  //   try {
+  //     const updatedPayment =
+  //       await this.paymentModel.updateOne(
+  //         {
+  //           _id: paymentId,
+  //           user: userId,
+  //         },
+  //         {
+  //           ...paymentDto,
+  //         },
+  //       );
+  //     return {
+  //       updatedCount: updatedPayment.modifiedCount,
+  //       statusCode: 200,
+  //     };
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // }
 
   async deletePaymentById(
     paymentId: string,
