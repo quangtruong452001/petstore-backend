@@ -3,34 +3,32 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  ValidateNested,
 } from 'class-validator';
-import { AmountPayment, Shipping } from './common.dto';
 
 export class PaymentDto {
   @IsString()
   @IsNotEmpty()
-  paymentId: string;
-
-  @ValidateNested()
-  @Type(() => AmountPayment)
-  amount: AmountPayment;
-
-  @ValidateNested()
-  @Type(() => Shipping)
-  shipping: Shipping;
+  externalId: string;
 
   @IsString()
-  @IsOptional()
-  description: string;
+  @IsNotEmpty()
+  payerFistName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  payerLastName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  currencyCode: string;
+
+  @IsString()
+  @IsNotEmpty()
+  totalAmount: string;
 
   @IsString()
   @IsNotEmpty()
   type: string;
 }
 
-export class PaymentUpdateDto {
-  @IsString()
-  @IsOptional()
-  description: string;
-}
+export class PaymentUpdateDto {}

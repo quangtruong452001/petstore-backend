@@ -4,29 +4,28 @@ import {
   SchemaFactory,
 } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import {
-  AmountPaymentSchema,
-  ShippingSchema,
-} from './common.schema';
 
 export type PaymentDocument = Payment & Document;
 
 @Schema({ timestamps: true })
 export class Payment {
   @Prop({ required: true })
-  paymentId: string;
+  externalId: string;
 
-  @Prop({ required: true, type: AmountPaymentSchema })
-  amount: object;
+  @Prop({ required: true })
+  payerFistName: string;
 
-  @Prop({ required: true, type: ShippingSchema })
-  shipping: object;
+  @Prop({ required: true })
+  payerLastName: string;
+
+  @Prop({ required: true })
+  currencyCode: string;
+
+  @Prop({ required: true })
+  totalAmount: string;
 
   @Prop({ required: true })
   type: string;
-
-  @Prop()
-  description: string;
 
   @Prop({
     required: true,
