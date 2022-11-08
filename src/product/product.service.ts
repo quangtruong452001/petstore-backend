@@ -30,12 +30,24 @@ export class ProductService {
     page?: number,
     limit?: number,
   ) {
-    const reg = new RegExp(options, 'i');
-    const pro = this.productModel
-      .find({ reg })
+    if (page < 0) {
+      page = 1;
+    }
+    if (limit < 0) {
+      limit = 9;
+    }
+    const data = await this.productModel
+      .find(options)
       .skip((page - 1) * limit)
       .limit(limit);
-    return pro;
+    const total = await this.count(options);
+
+    return {
+      data,
+      total,
+      page,
+      last_page: Math.ceil(total / limit),
+    };
   }
 
   async products(
@@ -95,8 +107,6 @@ export class ProductService {
         limit,
         handleProductSorts(sorts),
       );
-
-      // ** Update sort later
 
       const total = await this.count(options);
 

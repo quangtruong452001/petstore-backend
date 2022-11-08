@@ -23,13 +23,17 @@ export class ProductController {
 
   // ** Test vs debug search
   @Get('search')
-  search(
+  async search(
     @Query('s') option: any,
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
-    return this.productService.search(
-      option,
+    const reg = new RegExp(option, 'i');
+    const options = {
+      name: reg,
+    };
+    return await this.productService.search(
+      options,
       page ? page : 1,
       limit ? limit : 9,
     );
