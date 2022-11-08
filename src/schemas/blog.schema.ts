@@ -10,8 +10,8 @@ export type BlogDocument = Blog & Document;
 
 @Schema()
 export class Blog {
-  @Prop()
-  id: string;
+  // @Prop()
+  // id: string;
   @Prop({ required: true })
   title: string;
   @Prop({ default: 'Unknown' })
@@ -29,5 +29,5 @@ export class Blog {
   images: Image[];
 }
 
-export const CategorySchema =
+export const BlogSchema =
   SchemaFactory.createForClass(Blog);
