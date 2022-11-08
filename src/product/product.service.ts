@@ -25,6 +25,19 @@ export class ProductService {
     private productModel: Model<ProductDocument>, // private config: ConfigService,
   ) {}
 
+  async search(
+    options: any,
+    page?: number,
+    limit?: number,
+  ) {
+    const reg = new RegExp(options, 'i');
+    const pro = this.productModel
+      .find({ reg })
+      .skip((page - 1) * limit)
+      .limit(limit);
+    return pro;
+  }
+
   async products(
     options: any,
     page?: number,
@@ -61,10 +74,10 @@ export class ProductService {
         limit = 9;
       }
 
-      if (req.query.s) {
-        // query.search (by name)
-        options.name = req.query.s.toString();
-      }
+      // if (req.query.s) {
+      //   // query.search (by name)
+      //   options.name = req.query.s.toString();
+      // }
       if (req.query.categories) {
         // for filter by
         options.categories =
@@ -135,6 +148,34 @@ export class ProductService {
         statusCode: 200,
       };
     } catch (err) {
+      throw err;
+    }
+  }
+
+  async similarProducts(options) {
+    try {
+      const similarProducts = await this.products(
+        options,
+        1,
+        4,
+      );
+      return similarProducts;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  async objectIdArray() {
+    try {
+      const objectIdArray: any = [];
+      const data = await this.productModel.find({});
+      for (let i = 0; i < data.length; i++) {
+        objectIdArray.push(data[i]._id);
+      }
+      return objectIdArray;
+    } catch (err) {
+      console.log(err);
       throw err;
     }
   }
