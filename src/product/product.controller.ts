@@ -4,20 +4,40 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Request } from 'express';
-import { productQuery, productSort } from '../utils/type';
-import {
-  handleProductFilters,
-  handleProductSorts,
-} from '../utils/helper';
 import { ProductDto } from './dto';
+import { Request } from 'express';
 
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
+
+  // ** GET /product
+  @Get()
+  async products(@Req() req: Request) {
+    return this.productService.productsList(req);
+  }
+
+  // ** Test vs debug search
+  @Get('search')
+  async search(
+    @Query('s') option: any,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    const reg = new RegExp(option, 'i');
+    const options = {
+      name: reg,
+    };
+    return await this.productService.search(
+      options,
+      page ? page : 1,
+      limit ? limit : 9,
+    );
+  }
 
   // ** POST /product/create
   @Post('create')
@@ -39,57 +59,31 @@ export class ProductController {
     return this.productService.getTotalProducts();
   }
 
-  // ** GET /product/:id
-  @Get(':id')
-  productDetail(@Param('id') id: string) {
-    return this.productService.productDetail(id);
+  // **GET /product/array
+  @Get('listId')
+  async objectIdArray() {
+    return this.productService.objectIdArray();
   }
 
-  // ** GET /product
-  @Get()
-  async products(@Req() req: Request) {
-    const options: productQuery = {};
-    const sorts: productSort = {};
-    let page: number = parseInt(req.query.page as any) || 1;
-    let limit: number =
-      parseInt(req.query.limit as any) || 9;
-    if (page < 0) {
-      page = 1;
-    }
-    if (limit < 0) {
-      limit = 9;
-    }
+  // ** GET /product/:id
 
-    if (req.query.s) {
-      // query.search (by name)
-      options.name = req.query.s.toString();
-    }
-    if (req.query.categories) {
-      // for filter by
-      options.categories = req.query.categories.toString();
-    }
+  @Get(':id')
+  async productDetail(@Param('id') id: string) {
+    const productDetail: any =
+      await this.productService.productDetail(id);
+    const categories = productDetail.categories[0]._id;
 
-    // ** Sort
-    if (req.query.orderBy) {
-      sorts.orderBy = req.query.orderBy.toString();
-    }
-
-    const data = await this.productService.products(
-      handleProductFilters(options),
-      page,
-      limit,
-      handleProductSorts(sorts),
-    );
-
-    // ** Update sort later
-
-    const total = await this.productService.count(options);
+    const similarProducts =
+      await this.productService.similarProducts({
+        categories: categories,
+      });
 
     return {
-      data,
-      total,
-      page,
-      last_page: Math.ceil(total / limit),
+      productDetail: {
+        ...productDetail['_doc'],
+        similarProducts: similarProducts,
+      },
+      // similarProducts: similarProducts,
     };
   }
 }

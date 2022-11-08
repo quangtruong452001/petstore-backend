@@ -11,6 +11,12 @@ import {
   ProductDocument,
 } from '../schemas/product.schema';
 import { ProductDto } from './dto';
+import { Request } from 'express';
+import { productQuery, productSort } from '../utils/type';
+import {
+  handleProductFilters,
+  handleProductSorts,
+} from '../utils/helper';
 
 @Injectable()
 export class ProductService {
@@ -18,6 +24,31 @@ export class ProductService {
     @InjectModel(Product.name)
     private productModel: Model<ProductDocument>, // private config: ConfigService,
   ) {}
+
+  async search(
+    options: any,
+    page?: number,
+    limit?: number,
+  ) {
+    if (page < 0) {
+      page = 1;
+    }
+    if (limit < 0) {
+      limit = 9;
+    }
+    const data = await this.productModel
+      .find(options)
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const total = await this.count(options);
+
+    return {
+      data,
+      total,
+      page,
+      last_page: Math.ceil(total / limit),
+    };
+  }
 
   async products(
     options: any,
@@ -40,6 +71,57 @@ export class ProductService {
     // **Find all the product
   }
 
+  async productsList(req: Request) {
+    try {
+      const options: productQuery = {};
+      const sorts: productSort = {};
+      let page: number =
+        parseInt(req.query.page as any) || 1;
+      let limit: number =
+        parseInt(req.query.limit as any) || 9;
+      if (page < 0) {
+        page = 1;
+      }
+      if (limit < 0) {
+        limit = 9;
+      }
+
+      // if (req.query.s) {
+      //   // query.search (by name)
+      //   options.name = req.query.s.toString();
+      // }
+      if (req.query.categories) {
+        // for filter by
+        options.categories =
+          req.query.categories.toString();
+      }
+
+      // ** Sort
+      if (req.query.orderBy) {
+        sorts.orderBy = req.query.orderBy.toString();
+      }
+
+      const data = await this.products(
+        handleProductFilters(options),
+        page,
+        limit,
+        handleProductSorts(sorts),
+      );
+
+      const total = await this.count(options);
+
+      return {
+        data,
+        total,
+        page,
+        last_page: Math.ceil(total / limit),
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async productDetail(id: string) {
     try {
       const product = await this.productModel
@@ -51,6 +133,7 @@ export class ProductService {
       throw error;
     }
   }
+
   count(options: any) {
     try {
       return this.productModel.count(options).exec();
@@ -75,6 +158,34 @@ export class ProductService {
         statusCode: 200,
       };
     } catch (err) {
+      throw err;
+    }
+  }
+
+  async similarProducts(options) {
+    try {
+      const similarProducts = await this.products(
+        options,
+        1,
+        4,
+      );
+      return similarProducts;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
+  async objectIdArray() {
+    try {
+      const objectIdArray: any = [];
+      const data = await this.productModel.find({});
+      for (let i = 0; i < data.length; i++) {
+        objectIdArray.push(data[i]._id);
+      }
+      return objectIdArray;
+    } catch (err) {
+      console.log(err);
       throw err;
     }
   }

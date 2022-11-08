@@ -13,6 +13,7 @@ export function generateTextSearch(value, fts = false) {
         $options: 'i',
       };
 }
+
 // export const cleanObject = (originalObject = {}) => {
 //   const validArrays = pickBy(
 //       originalObject,
@@ -52,14 +53,15 @@ export function handleProductFilters(filters) {
 
   const query: productQuery = {};
   if (name) {
-    query.name = generateTextSearch(name);
+    // query.name = generateTextSearch(name);
+    query.name = new RegExp(name, 'i');
   }
   if (categories) {
     query.categories = new mongoose.Types.ObjectId(
       categories,
     );
   }
-  // console.log({ ...query, ...rest });
+  console.log({ ...query, ...rest });
   return { ...query, ...rest };
 }
 
