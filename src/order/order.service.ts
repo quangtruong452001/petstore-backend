@@ -88,6 +88,8 @@ export class OrderService {
       };
       if (orderDto.payment)
         otherInfos.payment = orderDto.payment;
+      if (orderDto.shipping)
+        otherInfos.shipping = orderDto.shipping;
 
       // Create order in the database:
       const createdOrder = await this.orderModel.create({
@@ -96,6 +98,9 @@ export class OrderService {
       });
       return {
         paymentId: orderDto.payment ? orderDto.payment : '',
+        shippingId: orderDto.shipping
+          ? orderDto.shipping
+          : '',
         orderId: createdOrder._id,
         statusCode: 201,
       };
