@@ -76,12 +76,23 @@ export class AuthService {
     };
     const secret = this.config.get('JWT_SECRET');
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '12h', // ** 12 hours,
+      expiresIn: '24h', // ** 24 hours,
       secret: secret,
+    });
+
+    const user = await this.userModel.findOne({
+      _id: userId,
     });
 
     return {
       accessToken: token,
+      expiredIn: 1,
+      user: {
+        id: userId,
+        username: email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
       statusCode: 200,
     };
   }
