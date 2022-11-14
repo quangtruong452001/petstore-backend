@@ -25,6 +25,7 @@ export class ProductService {
     private productModel: Model<ProductDocument>, // private config: ConfigService,
   ) {}
 
+  // Return list of products with pagination
   async search(
     options: any,
     page?: number,
@@ -50,6 +51,7 @@ export class ProductService {
     };
   }
 
+  // Return list of products base on options
   async products(
     options: any,
     page?: number,
@@ -68,9 +70,9 @@ export class ProductService {
       console.log(error);
       throw error;
     }
-    // **Find all the product
   }
 
+  // Return a products List and additional information
   async productsList(req: Request) {
     try {
       const options: productQuery = {};
@@ -108,6 +110,8 @@ export class ProductService {
         handleProductSorts(sorts),
       );
 
+      const minPrice = await this.getPrice('priceAsc');
+      const maxPrice = await this.getPrice('priceDesc');
       const total = await this.count(options);
 
       return {
@@ -115,6 +119,8 @@ export class ProductService {
         total,
         page,
         last_page: Math.ceil(total / limit),
+        minPrice,
+        maxPrice,
       };
     } catch (error) {
       console.log(error);
@@ -122,6 +128,7 @@ export class ProductService {
     }
   }
 
+  // Return Product details
   async productDetail(id: string) {
     try {
       const product = await this.productModel
@@ -134,6 +141,7 @@ export class ProductService {
     }
   }
 
+  // Count number of product base on options
   count(options: any) {
     try {
       return this.productModel.count(options).exec();
@@ -143,11 +151,13 @@ export class ProductService {
     }
   }
 
+  // Create products (POST)
   async createProduct(productDto: ProductDto) {
     // console.log(productDto);
     return await this.productModel.create(productDto);
   }
 
+  // Get number of total products
   async getTotalProducts() {
     try {
       const totalOrders =
@@ -160,6 +170,18 @@ export class ProductService {
     } catch (err) {
       throw err;
     }
+  }
+
+  // Find min, max price
+  async getPrice(orderBy) {
+    const product = await this.products(
+      {},
+      1,
+      1,
+      handleProductSorts({ orderBy }),
+    );
+    const price = product[0].price;
+    return price;
   }
 
   async similarProducts(options) {

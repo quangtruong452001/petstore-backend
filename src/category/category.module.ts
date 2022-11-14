@@ -14,14 +14,16 @@ import {
 } from '../schemas/category.schema';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
+import { ProductService } from '../product/product.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Category.name, schema: CategorySchema },
+      { name: Product.name, schema: ProductSchema },
     ]),
   ],
   controllers: [CategoryController],
-  providers: [CategoryService],
+  providers: [CategoryService, ProductService],
 })
 export class CategoryModule {}
