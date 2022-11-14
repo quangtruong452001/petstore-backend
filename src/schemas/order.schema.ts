@@ -34,6 +34,9 @@ export class Order {
   })
   payment: string;
 
+  @Prop()
+  shipping: string;
+
   @Prop({ required: true })
   status: number;
 }
