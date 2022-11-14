@@ -83,7 +83,6 @@ export class OrderService {
     try {
       // Other information added to order:
       const otherInfos: any = {
-        status: ORDER_STATUS.PENDING,
         user: userId,
       };
       if (orderDto.payment)

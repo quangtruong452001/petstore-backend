@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsEmail,
   IsOptional,
+  IsArray,
 } from 'class-validator';
 
 export class BillDto {
@@ -68,4 +69,8 @@ export class CartDto {
   @IsInt()
   @IsNotEmpty()
   quantity: number;
+
+  @IsArray()
+  @IsNotEmpty()
+  images: object[];
 }
