@@ -9,9 +9,3 @@ export type productSort = {
 
   orderBy?: any;
 };
-
-export type category = {
-  _id: string;
-  category_name: string;
-  totalProducts?: number;
-};

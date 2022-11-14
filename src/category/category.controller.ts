@@ -1,7 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { ProductService } from '../product/product.service';
-import { category } from '../utils/type';
 
 @Controller('categories')
 export class CategoryController {
