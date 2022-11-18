@@ -59,6 +59,9 @@ export class Cart {
 
   @Prop({ required: true })
   quantity: number;
+
+  @Prop({ required: true })
+  images: object[];
 }
 
 export const ImageSchema =

@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsMongoId,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -19,6 +20,14 @@ export class OrderDto {
   @Type(() => CartDto)
   cart: CartDto[];
 
+  @IsNumber()
+  @IsNotEmpty()
+  totalPrice: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  shippingFee: number;
+
   @IsMongoId()
   @IsOptional()
   payment: string;
@@ -29,10 +38,6 @@ export class OrderDto {
 }
 
 export class OrderUpdateDto {
-  @IsNumber()
-  @IsOptional()
-  status: number;
-
   @IsMongoId()
   @IsOptional()
   payment: string;
