@@ -88,10 +88,30 @@ export class ProductService {
         limit = 9;
       }
 
+      let max: number;
+      let min: number;
+
       // if (req.query.s) {
       //   // query.search (by name)
       //   options.name = req.query.s.toString();
       // }
+
+      if (req.query.minPrice) {
+        min = parseInt(req.query.minPrice as any) || 0;
+        options.minPrice = min;
+      }
+
+      if (req.query.maxPrice) {
+        max = parseInt(req.query.maxPrice as any) || 100000;
+        options.maxPrice = max;
+      }
+
+      if (max < min) {
+        throw Error(
+          'Max price cannot smaller than min price',
+        );
+      }
+
       if (req.query.categories) {
         // for filter by
         options.categories =
@@ -110,8 +130,12 @@ export class ProductService {
         handleProductSorts(sorts),
       );
 
-      const minPrice = await this.getPrice('priceAsc');
-      const maxPrice = await this.getPrice('priceDesc');
+      const minPrice = options.minPrice
+        ? options.minPrice
+        : await this.getPrice('priceAsc');
+      const maxPrice = options.maxPrice
+        ? options.maxPrice
+        : await this.getPrice('priceDesc');
       const total = await this.count(options);
 
       return {
@@ -142,9 +166,9 @@ export class ProductService {
   }
 
   // Count number of product base on options
-  count(options: any) {
+  async count(options: any) {
     try {
-      return this.productModel.count(options).exec();
+      return this.productModel.count(options);
     } catch (error) {
       console.log(error);
       throw error;

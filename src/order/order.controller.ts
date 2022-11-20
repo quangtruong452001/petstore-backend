@@ -28,6 +28,19 @@ export class OrderController {
     return this.orderService.getOrders(userId, limit, page);
   }
 
+  @Get('admin')
+  getAdminOrders(
+    @GetUser('id') userId: string,
+    @Query('limit') limit?: string,
+    @Query('page') page?: string,
+  ) {
+    return this.orderService.getAdminOrders(
+      userId,
+      limit,
+      page,
+    );
+  }
+
   @Get('total')
   getTotalOrders(@GetUser('id') userId: string) {
     return this.orderService.getTotalOrders(userId);

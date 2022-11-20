@@ -6,14 +6,25 @@ import {
   Post,
   Query,
   Req,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from './dto';
 import { Request } from 'express';
+import { ImageService } from '../image/image.service';
+import {
+  FileInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 
 @Controller('product')
 export class ProductController {
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private imageService: ImageService,
+  ) {}
 
   // ** GET /product
   @Get()
@@ -41,9 +52,44 @@ export class ProductController {
 
   // ** POST /product/create
   @Post('create')
-  createProduct(@Body() productDto: ProductDto) {
-    // console.log(productDto);
-    return this.productService.createProduct(productDto);
+  @UseInterceptors(FilesInterceptor('images'))
+  async createProduct(
+    @Req() req: Request,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    const newProduct: any = req.body.newProduct
+      ? JSON.parse(req.body.newProduct)
+      : {
+          name: req.body.name,
+          price: parseFloat(req.body.price),
+          productCode: req.body.productCode,
+          categories: req.body.categories,
+          description: req.body.description,
+          shortDescription: req.body.shortDescription,
+          productSKU: req.body.productSKU,
+          additionalInfos: req.body.additionalInfos,
+        };
+    // console.log(files);
+    // ** Upload file to firebase
+    const fileList = await this.imageService.uploadImages(
+      files,
+    );
+    // console.log(fileList);
+    // ** Save images url to our mongoDB collections
+    let imgs = [];
+    for (let i = 0; i < fileList.length; i++) {
+      const img = fileList[i];
+      // console.log(img);
+      const image = await this.imageService.createImage(
+        img,
+      );
+      console.log(image);
+      imgs.push(image.id);
+    }
+    // console.log(imgs);
+    // ** Get array of image's id and add to our product
+    newProduct.images = imgs;
+    return this.productService.createProduct(newProduct);
   }
 
   // ** GET /product/all  will add pagination later

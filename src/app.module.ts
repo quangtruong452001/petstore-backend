@@ -12,6 +12,7 @@ import { PaymentModule } from './payment/payment.module';
 import { CategoryModule } from './category/category.module';
 import { HomepageModule } from './homepage/homepage.module';
 import { BlogModule } from './blog/blog.module';
+import { ImageModule } from './image/image.module';
 
 const config: ConfigService = new ConfigService();
 
@@ -29,6 +30,7 @@ const config: ConfigService = new ConfigService();
     CategoryModule,
     HomepageModule,
     BlogModule,
+    ImageModule,
   ],
 })
 export class AppModule {}

@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
@@ -12,6 +13,7 @@ import { OrderService } from './order.service';
     MongooseModule.forFeature([
       { name: Order.name, schema: OrderSchema },
     ]),
+    HttpModule,
   ],
   controllers: [OrderController],
   providers: [OrderService],

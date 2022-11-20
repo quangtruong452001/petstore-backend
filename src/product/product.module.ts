@@ -9,11 +9,13 @@ import {
 import {
   Image,
   ImageSchema,
-} from '../schemas/common.schema';
+} from '../schemas/image.schema';
 import {
   Category,
   CategorySchema,
 } from '../schemas/category.schema';
+import { ImageService } from '../image/image.service';
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -23,6 +25,6 @@ import {
     ]),
   ],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, ImageService],
 })
 export class ProductModule {}
