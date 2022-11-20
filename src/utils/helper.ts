@@ -1,7 +1,9 @@
 // import { pickBy } from 'lodash';
 import mongoose from 'mongoose';
-import { productQuery, productSort } from './type';
-import any = jasmine.any;
+import {
+  // productQuery,
+  productSort,
+} from './type';
 
 export function generateTextSearch(value, fts = false) {
   return fts
@@ -49,9 +51,11 @@ export function handleProductFilters(filters) {
   if (!filters) {
     return {};
   }
-  const { name, categories, ...rest } = filters;
+  const { name, categories, minPrice, maxPrice, ...rest } =
+    filters;
 
-  const query: productQuery = {};
+  const query: any = {};
+  // $or = [];
   if (name) {
     // query.name = generateTextSearch(name);
     query.name = new RegExp(name, 'i');
@@ -61,7 +65,56 @@ export function handleProductFilters(filters) {
       categories,
     );
   }
-  console.log({ ...query, ...rest });
+  if (minPrice && maxPrice) {
+    query.price = {
+      $gte: minPrice,
+      $lte: maxPrice,
+    };
+  } else if (maxPrice) {
+    query.price = {
+      $lte: maxPrice,
+    };
+  } else if (minPrice) {
+    query.price = {
+      $gte: minPrice,
+    };
+  }
+  // if (minPrice && maxPrice) {
+  //   $or.push(
+  //     ...[
+  //       {
+  //         ['price']: {
+  //           $gte: minPrice,
+  //           $lte: maxPrice,
+  //         },
+  //       },
+  //     ],
+  //   );
+  // } else if (minPrice) {
+  //   $or.push(
+  //     ...[
+  //       {
+  //         ['price']: {
+  //           $gte: minPrice,
+  //         },
+  //       },
+  //     ],
+  //   );
+  // } else {
+  //   $or.push(
+  //     ...[
+  //       {
+  //         ['price']: {
+  //           $lte: maxPrice,
+  //         },
+  //       },
+  //     ],
+  //   );
+  // }
+  // if ($or.length) {
+  //   query.$or = $or;
+  // }
+  // console.log({ ...query, ...rest });
   return { ...query, ...rest };
 }
 
@@ -81,4 +134,10 @@ export function handleProductSorts(sorts) {
     sort.createdAt = 1;
   }
   return { ...sort };
+}
+
+export function convertToSlug(Text) {
+  return Text.toLowerCase()
+    .replace(/[^\w ]+/g, '')
+    .replace(/ +/g, '-');
 }

@@ -40,6 +40,7 @@ export class ProductDto {
 
   @IsArray()
   @Type(() => ImageDto)
+  @IsOptional()
   images: ImageDto[];
 
   @IsArray()
