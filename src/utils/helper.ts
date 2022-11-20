@@ -135,3 +135,9 @@ export function handleProductSorts(sorts) {
   }
   return { ...sort };
 }
+
+export function convertToSlug(Text) {
+  return Text.toLowerCase()
+    .replace(/[^\w ]+/g, '')
+    .replace(/ +/g, '-');
+}

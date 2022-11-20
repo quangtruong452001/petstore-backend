@@ -11,7 +11,7 @@ export type CategoryDocument = Category & Document;
 export class Category {
   @Prop()
   id: string;
-  @Prop()
+  @Prop({ require: true })
   category_name: string;
 }
 
