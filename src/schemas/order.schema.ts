@@ -39,9 +39,15 @@ export class Order {
     ref: 'Payment',
   })
   payment: string;
+  // 6372f95915aabf9113f9a6e9
+  // 6372feda15aabf9113f9a992
+  // 6374a2b10a1a169d80f044d2
 
   @Prop()
   shipping: string;
+
+  @Prop({ required: true })
+  confirmStatus: string;
 }
 
 export const OrderSchema =

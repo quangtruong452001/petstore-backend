@@ -45,4 +45,8 @@ export class OrderUpdateDto {
   @IsString()
   @IsOptional()
   shipping: string;
+
+  @IsString()
+  @IsOptional()
+  confirmStatus: string;
 }
