@@ -23,7 +23,11 @@ export class ImageService {
   ) {}
 
   async createImage(image: imageDto) {
-    const img = await this.imageModel.create(image);
+    const { url, image_name } = image;
+    const img = await this.imageModel.create({
+      url: url,
+      image_name: image_name,
+    });
     return img;
   }
 
@@ -37,14 +41,14 @@ export class ImageService {
       metadata.contentType = 'image/png';
     }
     if (type == 'jpg') {
-      metadata.contentType = 'jpg/png';
+      metadata.contentType = 'image/jpg';
     }
     await uploadBytes(imageRef, file.buffer, metadata);
     const downloadURL = await getDownloadURL(imageRef);
     // console.log(downloadURL);
     return {
       image_name: convertToSlug(file.originalname),
-      downloadURL,
+      url: downloadURL,
     };
   }
 

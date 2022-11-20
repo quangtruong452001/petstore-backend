@@ -79,12 +79,14 @@ export class ProductController {
     let imgs = [];
     for (let i = 0; i < fileList.length; i++) {
       const img = fileList[i];
+      // console.log(img);
       const image = await this.imageService.createImage(
         img,
       );
+      console.log(image);
       imgs.push(image.id);
     }
-    // console.log(images);
+    // console.log(imgs);
     // ** Get array of image's id and add to our product
     newProduct.images = imgs;
     return this.productService.createProduct(newProduct);

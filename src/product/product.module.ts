@@ -9,7 +9,7 @@ import {
 import {
   Image,
   ImageSchema,
-} from '../schemas/common.schema';
+} from '../schemas/image.schema';
 import {
   Category,
   CategorySchema,
