@@ -21,12 +21,6 @@ export class Order {
   @Prop({ required: true, type: BillSchema })
   bill: Bill;
 
-  @Prop({ required: true })
-  totalPrice: number;
-
-  @Prop({ required: true })
-  shippingFee: number;
-
   @Prop({
     required: true,
     type: mongoose.Schema.Types.ObjectId,
@@ -40,8 +34,14 @@ export class Order {
   })
   payment: string;
 
-  @Prop()
-  shipping: string;
+  @Prop({ required: true })
+  shippingTime: string;
+
+  @Prop({ required: true })
+  shippingFee: number;
+
+  @Prop({ required: true })
+  totalPrice: number;
 
   @Prop({ required: true })
   status: string;
