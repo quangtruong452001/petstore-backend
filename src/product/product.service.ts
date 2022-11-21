@@ -40,7 +40,8 @@ export class ProductService {
     const data = await this.productModel
       .find(options)
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit)
+      .populate(['images', 'categories']);
     const total = await this.count(options);
 
     return {
