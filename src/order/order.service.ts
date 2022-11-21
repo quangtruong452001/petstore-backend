@@ -201,4 +201,28 @@ export class OrderService {
       throw err;
     }
   }
+
+  async count(options: any) {
+    try {
+      options ? options : {};
+      return this.orderModel.count(options);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async totalSale() {
+    try {
+      let totalSale = 0;
+      const orderList = await this.orderModel.find({});
+      for (let i = 0; i < orderList.length; i++) {
+        totalSale = orderList[i].totalPrice;
+      }
+      return totalSale;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
