@@ -18,6 +18,24 @@ export class OrderService {
     private readonly httpService: HttpService,
   ) {}
 
+  async getLatestOrder(option: any, limit?: any) {
+    try {
+      option ? option : {};
+      limit = parseInt(limit);
+      if (limit < 0) {
+        limit = 5;
+      }
+      const orders = await this.orderModel
+        .find(option)
+        .limit(limit)
+        .sort({ createdAt: -1 });
+      return orders;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
   async getOrders(
     userId: string,
     limit?: string,
