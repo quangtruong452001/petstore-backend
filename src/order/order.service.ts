@@ -18,6 +18,24 @@ export class OrderService {
     private readonly httpService: HttpService,
   ) {}
 
+  async getLatestOrder(option: any, limit?: any) {
+    try {
+      option ? option : {};
+      limit = parseInt(limit);
+      if (limit < 0) {
+        limit = 5;
+      }
+      const orders = await this.orderModel
+        .find(option)
+        .limit(limit)
+        .sort({ createdAt: -1 });
+      return orders;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
   async getOrders(
     userId: string,
     limit?: string,
@@ -104,27 +122,8 @@ export class OrderService {
       const order = await this.orderModel.findOne(filters);
       let orderDetail = await order.populate('payment');
 
-      // ** Get shipping detail:
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Token: '5afa38c1-5c4b-11ed-b8cc-a20ef301dcd7',
-        },
-      };
-      const data_raw = {
-        order_code: orderDetail.shipping,
-      };
-      const { data } = await firstValueFrom(
-        this.httpService.post(
-          'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail',
-          data_raw,
-          config,
-        ),
-      );
-
       return {
         order: orderDetail,
-        shipping: data.data,
         statusCode: 200,
       };
     } catch (err) {
@@ -137,12 +136,10 @@ export class OrderService {
       // Other information added to order:
       const otherInfos: any = {
         user: userId,
-        confirmStatus: ORDER_STATUS.PENDING,
+        status: ORDER_STATUS.PENDING,
       };
       if (orderDto.payment)
         otherInfos.payment = orderDto.payment;
-      if (orderDto.shipping)
-        otherInfos.shipping = orderDto.shipping;
 
       // Create order in the database:
       const createdOrder = await this.orderModel.create({
@@ -152,9 +149,6 @@ export class OrderService {
 
       return {
         paymentId: orderDto.payment ? orderDto.payment : '',
-        shippingId: orderDto.shipping
-          ? orderDto.shipping
-          : '',
         orderId: createdOrder._id,
         statusCode: 201,
       };
@@ -172,7 +166,7 @@ export class OrderService {
       const updatedOrder = await this.orderModel.updateOne(
         {
           _id: orderId,
-          user: userId,
+          // user: userId,
         },
         {
           ...orderDto,

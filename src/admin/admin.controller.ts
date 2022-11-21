@@ -21,11 +21,16 @@ export class AdminController {
       status: 'done',
     });
     const totalSale = await this.orderService.totalSale();
+    const orders = await this.orderService.getLatestOrder(
+      {},
+      5,
+    );
     return {
       totalOrder,
       totalPendingOrder,
       totalSoldProduct,
       totalSale,
+      orders,
     };
   }
 }

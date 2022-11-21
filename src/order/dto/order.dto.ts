@@ -20,21 +20,21 @@ export class OrderDto {
   @Type(() => CartDto)
   cart: CartDto[];
 
-  @IsNumber()
-  @IsNotEmpty()
-  totalPrice: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  shippingFee: number;
-
   @IsMongoId()
   @IsOptional()
   payment: string;
 
   @IsString()
   @IsOptional()
-  shipping: string;
+  shippingTime: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  shippingFee: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  totalPrice: number;
 }
 
 export class OrderUpdateDto {
@@ -44,9 +44,5 @@ export class OrderUpdateDto {
 
   @IsString()
   @IsOptional()
-  shipping: string;
-
-  @IsString()
-  @IsOptional()
-  confirmStatus: string;
+  status: string;
 }
