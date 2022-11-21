@@ -13,6 +13,7 @@ import { CategoryModule } from './category/category.module';
 import { HomepageModule } from './homepage/homepage.module';
 import { BlogModule } from './blog/blog.module';
 import { ImageModule } from './image/image.module';
+import { AdminModule } from './admin/admin.module';
 
 const config: ConfigService = new ConfigService();
 
@@ -31,6 +32,7 @@ const config: ConfigService = new ConfigService();
     HomepageModule,
     BlogModule,
     ImageModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
