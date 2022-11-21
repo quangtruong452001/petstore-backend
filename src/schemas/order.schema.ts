@@ -44,7 +44,7 @@ export class Order {
   shipping: string;
 
   @Prop({ required: true })
-  confirmStatus: string;
+  status: string;
 }
 
 export const OrderSchema =

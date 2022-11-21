@@ -15,10 +15,10 @@ export class AdminController {
   async dashboard() {
     const totalOrder = await this.orderService.count({});
     const totalPendingOrder = await this.orderService.count(
-      { confirmStatus: 'pending' },
+      { status: 'pending' },
     );
     const totalSoldProduct = await this.orderService.count({
-      confirmStatus: 'done',
+      status: 'done',
     });
     const totalSale = await this.orderService.totalSale();
     return {
