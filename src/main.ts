@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: true,
+    credentials: true,
   });
   // ** NestJS Pipe: https://docs.nestjs.com/pipes to validate data in the dto object.
   app.useGlobalPipes(
