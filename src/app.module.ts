@@ -14,6 +14,7 @@ import { HomepageModule } from './homepage/homepage.module';
 import { BlogModule } from './blog/blog.module';
 import { ImageModule } from './image/image.module';
 import { AdminModule } from './admin/admin.module';
+import { TestModule } from './test/test.module';
 
 const config: ConfigService = new ConfigService();
 
@@ -33,6 +34,7 @@ const config: ConfigService = new ConfigService();
     BlogModule,
     ImageModule,
     AdminModule,
+    TestModule,
   ],
 })
 export class AppModule {}
