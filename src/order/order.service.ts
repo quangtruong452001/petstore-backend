@@ -8,7 +8,7 @@ import {
 } from '../schemas/order.schema';
 import { OrderDto, OrderUpdateDto } from './dto';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+// import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class OrderService {
@@ -115,12 +115,14 @@ export class OrderService {
       // Determine filters in find()
       const filters = {
         _id: orderId,
-        user: userId,
+        // user: userId,
       };
 
       // Find order detail
       const order = await this.orderModel.findOne(filters);
-      let orderDetail = await order.populate('payment');
+      let orderDetail = order;
+      if (order.payment)
+        orderDetail = await order.populate('payment');
 
       return {
         order: orderDetail,
